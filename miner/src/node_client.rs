@@ -21,10 +21,10 @@ impl NodeClient for NetworkClient {
         let uri = format!("{}/block_template", self.node_url);
         let mut response = isahc::get(uri).unwrap();
 
-        // check that the response is sucessful
+        // check if response is sucessful
         assert_eq!(response.status().as_u16(), 200);
 
-        // parse and return block template
+        // parse block template from response
         let raw_body = response.text().unwrap();
         serde_json::from_str(&raw_body).unwrap()
     }

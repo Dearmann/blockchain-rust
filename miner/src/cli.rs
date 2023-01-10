@@ -4,24 +4,19 @@ use spec::types::Address;
 #[derive(Parser, Debug, Clone)]
 #[clap(author, version, about, long_about = None)]
 pub struct MinerArgs {
-    /// Account address that will receive the mining rewards
+    /// Miner address
     #[clap(short = 'a', long, value_parser)]
     pub miner_address: Address,
 
-    /// Network address of the node
-    #[clap(
-        short = 'n',
-        long,
-        value_parser,
-        default_value = "http://localhost:8000"
-    )]
+    /// Node address
+    #[clap(short = 'n', long, value_parser,  default_value = "http://localhost:8000")]
     pub node_url: String,
 
-    /// Minimum number of starting zeroes needed in a block hash for a proof-of-work valid block
+    /// Difficulty
     #[clap(short = 'd', long, value_parser, default_value = "10")]
     pub difficulty: u32,
 
-    /// Maximum nonce that will be used when mining a block
+    /// Maximum nonce
     #[clap(long, value_parser, default_value = "1000000")]
     pub max_nonce: u64,
 }
