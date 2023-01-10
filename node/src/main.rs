@@ -9,37 +9,35 @@ mod util;
 
 use env_logger::{Builder, Target};
 use log::LevelFilter;
-
 use crate::util::config::parse_from_cli;
-
 use crate::server::Server;
 
 fn main() {
-    // set up the logging system
-    initialize_logger();
+    // set up logger
+    setup_logger();
     info!("starting up");
 
-    // read the configuration from the command line
+    // read configuration from cli
     let config = parse_from_cli();
 
-    // run the server
+    // run server
     let server = Server::new(config);
     server.start();
 
-    // when user inputs Ctrl-C, terminate the program
-    set_ctrlc_handler();
+    // terminate program on ctrl + c
+    initialize_terminate_handler();
 }
 
-fn initialize_logger() {
+fn setup_logger() {
     let mut builder = Builder::from_default_env();
     builder.target(Target::Stdout);
     builder.filter(None, LevelFilter::Info);
     builder.init();
 }
 
-pub fn set_ctrlc_handler() {
+pub fn initialize_terminate_handler() {
     ctrlc::set_handler(move || {
         std::process::exit(0);
     })
-    .expect("Error setting Ctrl-C handler");
+    .expect("Error setting terminator");
 }

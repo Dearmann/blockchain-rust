@@ -5,7 +5,7 @@ pub trait Runnable: Sync {
     fn run(&self) -> Result<()>;
 }
 
-pub fn run_in_parallel(runnables: Vec<&dyn Runnable>) {
+pub fn run_parallel(runnables: Vec<&dyn Runnable>) {
     thread::scope(|s| {
         for runnable in runnables {
             s.spawn(move |_| {

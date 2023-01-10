@@ -1,5 +1,4 @@
 use spec::types::Network;
-
 use crate::{
     api::Api,
     database::ConcurrentNodeDatabase,
@@ -18,7 +17,6 @@ impl Server {
             difficulty: 0,
             timestamp: 0,
         };
-
         let database = ConcurrentNodeDatabase::new(network);
 
         Self { config, database }
@@ -27,6 +25,6 @@ impl Server {
     pub fn start(&self) {
         let api = Api::new(self.config.port, &self.database.clone());
         let peer = Peer::new(&self.config, &self.database.clone());
-        execution::run_in_parallel(vec![&api, &peer]);
+        execution::run_parallel(vec![&api, &peer]);
     }
 }
