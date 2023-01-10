@@ -54,14 +54,14 @@ async fn get_block_template(database: web::Data<ConcurrentNodeDatabase>) -> impl
     HttpResponse::Ok().json(&template_block)
 }
 
-// Returns a list of all the blocks in the blockchain
+// Return list of all blocks in blockchain
 async fn get_blocks(database: web::Data<ConcurrentNodeDatabase>) -> impl Responder {
     let blocks = database.get_all_blocks();
 
     HttpResponse::Ok().json(&blocks)
 }
 
-// Adds a new block to the blockchain
+// Add new block to blockchain
 async fn add_block(
     database: web::Data<ConcurrentNodeDatabase>,
     block_json: web::Json<Block>,
@@ -78,13 +78,13 @@ async fn add_block(
     }
 }
 
-// Returns a list of all the transactions that are not yet included into a block
+// Return list of all transactions not included into block
 async fn get_transactions(database: web::Data<ConcurrentNodeDatabase>) -> impl Responder {
     let transactions = database.get_mempool_transactions();
     HttpResponse::Ok().json(&transactions)
 }
 
-// Adds a new transaction to the pool, to be included on the next block
+// Add new transaction to pending pool
 async fn add_transaction(
     database: web::Data<ConcurrentNodeDatabase>,
     json_transaction: web::Json<Transaction>,
