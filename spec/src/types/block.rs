@@ -8,7 +8,7 @@ use super::{
     Transaction,
 };
 
-// Represents a block in a blockchain
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Block {
     pub index: u64,
@@ -20,7 +20,7 @@ pub struct Block {
 }
 
 impl Block {
-    // Create a brand new block. The hash value will be caclulated and set automatically.
+    // Create new block with default hash
     pub fn new(
         index: u64,
         nonce: u64,
@@ -44,7 +44,7 @@ impl Block {
         let (index, previous_hash) = match database.get_tip_block() {
             Some(tip_block) => (tip_block.index + 1, tip_block.hash),
             None => {
-                // The template is for the genesis block
+                // Template for genesis block
                 let index = 0;
                 let previous_hash = database.get_network().consensus_hash();
                 (index, previous_hash)
@@ -56,10 +56,8 @@ impl Block {
         Block::new(index, 0, previous_hash, transactions)
     }
 
-    // Calculate the hash value of the block
+    // Calculate hash of block
     pub fn calculate_hash(&self) -> ConsensusHash {
-        // We cannot use the hash field to calculate the hash
-        // so we zeroed it out
         let mut hashable_data = self.clone();
         hashable_data.hash = ConsensusHash::default();
 

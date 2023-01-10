@@ -67,7 +67,7 @@ impl Peer {
         for block in new_blocks.iter() {
             let result = self.database.append_block(block);
 
-            // if a block is invalid, no point in trying to add the next ones
+            
             if result.is_err() {
                 error!("Could not add peer block {} to the blockchain", block.index);
                 return;
