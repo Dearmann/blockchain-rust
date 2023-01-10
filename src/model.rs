@@ -12,6 +12,3 @@ pub use block::{Block, BlockHash};
 pub use blockchain::{Blockchain, BlockchainError, BLOCK_SUBSIDY};
 pub use transaction::Transaction;
 pub use transaction_pool::{TransactionPool, TransactionVec};
-
-#[cfg(test)]
-pub use address::test_util;
