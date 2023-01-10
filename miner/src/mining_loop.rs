@@ -6,7 +6,7 @@ use spec::{
 
 use crate::{block_miner::mine_block, cli::MinerArgs, node_client::NodeClient};
 
-pub fn run_mining_loop(args: MinerArgs, node_client: impl NodeClient) {
+pub fn mining_loop(args: MinerArgs, node_client: impl NodeClient) {
     let mut blocks_mined_by_miner: u64 = 0;
 
     loop {

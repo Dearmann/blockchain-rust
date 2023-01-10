@@ -3,7 +3,7 @@ use thiserror::Error;
 
 use super::{
     chain::validate_chain, coinbase::validate_coinbase, genesis::validate_genesis,
-    proof_of_work::validate_pow, transaction::validate_transaction,
+    proof_of_work::validate_proof_of_work, transaction::validate_transaction,
 };
 use crate::{types::Block, Database};
 
@@ -31,7 +31,7 @@ pub fn validate_block_metadata<T: Database>(database: &T, block: &Block) -> Resu
 
     // proof of work validation
     let difficulty = database.get_network().difficulty;
-    validate_pow(difficulty, block)?;
+    validate_proof_of_work(difficulty, block)?;
 
     Ok(())
 }

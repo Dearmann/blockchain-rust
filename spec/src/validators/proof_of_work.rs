@@ -9,7 +9,7 @@ pub enum ProofOfWorkError {
     InvalidDifficulty,
 }
 
-pub fn validate_pow(difficulty: u32, block: &Block) -> Result<()> {
+pub fn validate_proof_of_work(difficulty: u32, block: &Block) -> Result<()> {
     if block.hash.leading_zeros() < difficulty {
         return Err(ProofOfWorkError::InvalidDifficulty.into());
     }
