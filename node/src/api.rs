@@ -87,10 +87,10 @@ async fn get_transactions(database: web::Data<ConcurrentNodeDatabase>) -> impl R
 // Adds a new transaction to the pool, to be included on the next block
 async fn add_transaction(
     database: web::Data<ConcurrentNodeDatabase>,
-    transaction_json: web::Json<Transaction>,
+    json_transaction: web::Json<Transaction>,
 ) -> impl Responder {
-    let transaction = transaction_json.into_inner();
-    let result = database.add_mempool_transaction(transaction);
+    let transaction = json_transaction.into_inner();
+    let result = database.add_transaction(transaction);
     match result {
         Ok(_) => HttpResponse::Ok().finish(),
         Err(error) => HttpResponse::BadRequest().body(error.to_string()),

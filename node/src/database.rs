@@ -30,8 +30,8 @@ impl ConcurrentNodeDatabase {
         self.0.write().unwrap().append_block(block)
     }
 
-    pub fn add_mempool_transaction(&self, transaction: Transaction) -> Result<()> {
-        self.0.write().unwrap().add_mempool_transaction(transaction)
+    pub fn add_transaction(&self, transaction: Transaction) -> Result<()> {
+        self.0.write().unwrap().add_transaction(transaction)
     }
 
     fn get_read_lock(&self) -> RwLockReadGuard<NodeDatabase> {
@@ -81,43 +81,33 @@ impl NodeDatabase {
     }
 
     pub fn append_block(&mut self, block: &Block) -> Result<()> {
-        // make sure the block is valid before any other operation
         validate_block(self, block)?;
 
-        // append the new block to the end of the chain
+        // add new block to blockchain
         self.block_db.append_block(block.clone());
 
-        // update account balances
+        // update balances
         Self::process_transactions(&mut self.account_db, block)?;
 
-        // submitted transactions should be removed from the mempool
+        // remove submitted transactions
         self.mempool.remove_transactions(&block.transactions);
 
         Ok(())
     }
 
     fn process_transactions(account_db: &mut AccountDatabase, block: &Block) -> Result<()> {
-        // we know that at this point the block was already fully validated
-        // so we just update the balances without further validation
-        let mut transactions = block.transactions.iter();
 
-        // process the coinbase transaction, rewarding the miner
+        let mut transactions = block.transactions.iter();
         let coinbase = transactions.next().unwrap();
         account_db.add_funds(&coinbase.reciever, coinbase.amount);
-
-        // process transfers between accounts
         for transaction in transactions {
-            account_db.transfer(
-                &transaction.sender,
-                &transaction.reciever,
-                transaction.amount,
-            )?;
+            account_db.transfer(&transaction.sender, &transaction.reciever, transaction.amount)?;
         }
 
         Ok(())
     }
 
-    pub fn add_mempool_transaction(&mut self, transaction: Transaction) -> Result<()> {
+    pub fn add_transaction(&mut self, transaction: Transaction) -> Result<()> {
         validate_transaction(self, &transaction)?;
         self.mempool.add_transaction(transaction);
 
@@ -125,7 +115,7 @@ impl NodeDatabase {
     }
 }
 
-// this trait is necessary for the spec validators to run
+//necessary for spec validators
 impl SpecDatabase for NodeDatabase {
     fn get_network(&self) -> Network {
         self.network.clone()

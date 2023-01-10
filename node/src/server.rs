@@ -14,9 +14,7 @@ pub struct Server {
 
 impl Server {
     pub fn new(config: Config) -> Self {
-        // TODO: read the network definition from a file
         let network = Network {
-            description: "Test network".to_string(),
             difficulty: 0,
             timestamp: 0,
         };
