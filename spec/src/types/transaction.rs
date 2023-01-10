@@ -5,15 +5,15 @@ use super::{Address, Coin};
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Transaction {
     pub sender: Address,
-    pub recipient: Address,
+    pub reciever: Address,
     pub amount: Coin,
 }
 
 impl Transaction {
-    pub fn new(sender: Address, recipient: Address, amount: Coin) -> Self {
+    pub fn new(sender: Address, reciever: Address, amount: Coin) -> Self {
         Self {
             sender,
-            recipient,
+            reciever,
             amount,
         }
     }

@@ -2,10 +2,11 @@ use crate::{
     database::ConcurrentNodeDatabase,
     util::{
         config::Config,
-        execution::{sleep_millis, Runnable},
+        execution::Runnable
     },
 };
 use anyhow::Result;
+use std::time;
 use isahc::{ReadResponseExt, Request};
 use spec::{types::Block, Database as SpecDatabase};
 use std::panic;
@@ -47,7 +48,9 @@ impl Peer {
         loop {
             self.try_receive_new_blocks();
             last_sent_block_index = self.try_send_new_blocks_since(last_sent_block_index);
-            sleep_millis(self.peer_sync_ms);
+            let wait_duration = time::Duration::from_millis(self.peer_sync_ms);
+            std::thread::sleep(wait_duration);
+
         }
     }
 

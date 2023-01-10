@@ -21,10 +21,6 @@ pub struct MinerArgs {
     #[clap(short = 'd', long, value_parser, default_value = "10")]
     pub difficulty: u32,
 
-    /// Maximum number of blocks to mine (0 for unlimited)
-    #[clap(long, value_parser, default_value = "0")]
-    pub max_blocks: u64,
-
     /// Maximum nonce that will be used when mining a block
     #[clap(long, value_parser, default_value = "1000000")]
     pub max_nonce: u64,

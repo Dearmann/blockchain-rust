@@ -103,13 +103,13 @@ impl NodeDatabase {
 
         // process the coinbase transaction, rewarding the miner
         let coinbase = transactions.next().unwrap();
-        account_db.add_funds(&coinbase.recipient, coinbase.amount);
+        account_db.add_funds(&coinbase.reciever, coinbase.amount);
 
         // process transfers between accounts
         for transaction in transactions {
             account_db.transfer(
                 &transaction.sender,
-                &transaction.recipient,
+                &transaction.reciever,
                 transaction.amount,
             )?;
         }

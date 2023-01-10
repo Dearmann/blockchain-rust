@@ -75,7 +75,7 @@ mod tests {
     fn create_mock_transaction(amount: u64) -> Transaction {
         Transaction {
             sender: Address::default(),
-            recipient: Address::default(),
+            reciever: Address::default(),
             amount: amount,
         }
     }

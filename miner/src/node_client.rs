@@ -2,22 +2,22 @@ use isahc::{ReadResponseExt, Request};
 use spec::types::Block;
 
 pub trait NodeClient {
-    fn get_block_template(&self) -> Block;
-    fn submit_block(&self, block: &Block);
+    fn get_template_block(&self) -> Block;
+    fn send_block(&self, block: &Block);
 }
 
-pub struct NetworkNodeClient {
+pub struct NetworkClient {
     pub node_url: String,
 }
 
-impl NetworkNodeClient {
+impl NetworkClient {
     pub fn new(node_url: String) -> Self {
-        NetworkNodeClient { node_url }
+        NetworkClient { node_url }
     }
 }
 
-impl NodeClient for NetworkNodeClient {
-    fn get_block_template(&self) -> Block {
+impl NodeClient for NetworkClient {
+    fn get_template_block(&self) -> Block {
         let uri = format!("{}/block_template", self.node_url);
         let mut response = isahc::get(uri).unwrap();
 
@@ -29,7 +29,7 @@ impl NodeClient for NetworkNodeClient {
         serde_json::from_str(&raw_body).unwrap()
     }
 
-    fn submit_block(&self, block: &Block) {
+    fn send_block(&self, block: &Block) {
         let uri = format!("{}/blocks", self.node_url);
         let body = serde_json::to_string(block).unwrap();
 
