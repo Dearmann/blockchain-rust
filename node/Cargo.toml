@@ -24,13 +24,3 @@ rust-crypto = "0.2.36"
 serde = { version = "1.0.137", features = ["derive"] }
 serde_json = "1.0.81"
 thiserror = "1.0.31"
-
-[dev-dependencies]
-serial_test = "0.8.0"
-rusty-fork = "0.3.0"
-miner = { path = "../miner" }
-
-[dev-dependencies.cargo-husky]
-version = "1.5"
-default-features = false
-features = ["precommit-hook", "run-cargo-clippy", "run-cargo-fmt", "run-cargo-check", "run-cargo-test"]
